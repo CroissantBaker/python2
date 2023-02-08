@@ -254,5 +254,5 @@ pprint(json.dumps(transactions_list_of_dicts))
 # >  '1.25, "CustomerID": 14076, "Country": "United Kingdom"}]')
 
 # or to a file (do not forget to specify 'w' write mode):
-with open("./data/dumped_json.json", "w") as json_file:
+with open("../data/dumped_json.json", "w") as json_file:
     json.dump(transactions_list_of_dicts, json_file)
