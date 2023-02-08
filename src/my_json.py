@@ -1,6 +1,7 @@
 # Import the json module
 import json
 from pprint import pprint
+
 # pp = pprint.PrettyPrinter(indent=4)
 
 
@@ -145,7 +146,7 @@ pprint(transactions_list_of_dicts[0].keys())
 
 # Loop through a list of transactions and access all 'InvoiceNo' for each transaction by using .get method with a key name 'InvoiceNo'
 for transaction in transactions_list_of_dicts:
-    pprint(transaction.get('InvoiceNo'))
+    pprint(transaction.get("InvoiceNo"))
 # > 536370
 # > 536372
 # > 536389
@@ -153,8 +154,7 @@ for transaction in transactions_list_of_dicts:
 
 # or more pythonic via list comprehensions:
 
-pprint([transaction.get('InvoiceNo')
-       for transaction in transactions_list_of_dicts])
+pprint([transaction.get("InvoiceNo") for transaction in transactions_list_of_dicts])
 # > [536370, 536372, 536389, 562106]
 
 # Modify the object's attributes
@@ -174,7 +174,7 @@ pprint([transaction.get('InvoiceNo')
 
 # print the dictionary with InvoiceNo 536370
 for transaction in transactions_list_of_dicts:
-    if transaction.get('InvoiceNo') == 536370:
+    if transaction.get("InvoiceNo") == 536370:
         pprint(transaction)
 # > {'Country': 'France',
 # >  'CustomerID': 12583,
@@ -196,11 +196,11 @@ update_dict = {
     "InvoiceDate": "9/9/9999 9:99",
     "UnitPrice": 1,
     "CustomerID": 1,
-    "Country": "Nowhere"
+    "Country": "Nowhere",
 }
 
 for transaction in transactions_list_of_dicts:
-    if transaction.get('InvoiceNo') == 536370:
+    if transaction.get("InvoiceNo") == 536370:
         transaction.update(update_dict)
 pprint(transactions_list_of_dicts)
 # > [{'Country': 'Nowhere',
@@ -254,5 +254,5 @@ pprint(json.dumps(transactions_list_of_dicts))
 # >  '1.25, "CustomerID": 14076, "Country": "United Kingdom"}]')
 
 # or to a file (do not forget to specify 'w' write mode):
-with open("./data/dumped_json.json", 'w') as json_file:
+with open("./data/dumped_json.json", "w") as json_file:
     json.dump(transactions_list_of_dicts, json_file)

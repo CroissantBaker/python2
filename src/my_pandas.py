@@ -4,7 +4,8 @@ import pandas as pd
 # load a csv file
 e_commerce_data_path_csv = "./data/data.csv"
 e_commerce_csv_df = pd.read_csv(
-    e_commerce_data_path_csv,  encoding='unicode_escape', nrows=1000)
+    e_commerce_data_path_csv, encoding="unicode_escape", nrows=1000
+)
 # show columns
 print(e_commerce_csv_df.columns)
 # > Index(['InvoiceNo', 'StockCode', 'Description', 'Quantity', 'InvoiceDate',
@@ -48,9 +49,7 @@ print(e_commerce_csv_df.dtypes)
 # is just a dummy example, and I am not telling you that converting customerid to float is a smart move:)
 
 temp_dtype_change_df = e_commerce_csv_df.astype(
-    {'Quantity': 'float64',
-     'CustomerID': 'float64'
-     }
+    {"Quantity": "float64", "CustomerID": "float64"}
 )
 print(temp_dtype_change_df.dtypes)
 # > InvoiceNo       string
@@ -69,8 +68,7 @@ print(temp_dtype_change_df.dtypes)
 
 # load json
 e_commerce_data_path_json = "./data/data_subset.json"
-e_commerce_json_df = pd.read_json(
-    e_commerce_data_path_json,  encoding='unicode_escape')
+e_commerce_json_df = pd.read_json(e_commerce_data_path_json, encoding="unicode_escape")
 
 # see how many rows you should have after appending
 print(len(e_commerce_csv_df) + len(e_commerce_json_df))
@@ -93,7 +91,7 @@ print(e_commerce_appended_df)
 # > 3      562106     22993         SET OF 4 PANTRY JELLY MOULDS         1 2011-08-02 15:19:00      1.25       14076  United Kingdom
 # >
 # > [1004 rows x 8 columns]
-#len(e_commerce_appended_df)
+# len(e_commerce_appended_df)
 # > 1004
 
 # print out first few rows of the dataframe
@@ -119,7 +117,7 @@ my_json = '{"Country" : ["United Kingdom", "France", "Australia", "Netherlands"]
 json_df = pd.read_json(my_json)
 print(json_df)
 
-e_commerce_csv_df = e_commerce_csv_df.merge(json_df,on = "Country")
+e_commerce_csv_df = e_commerce_csv_df.merge(json_df, on="Country")
 print(e_commerce_csv_df)
 
 ##########################################################
@@ -139,8 +137,9 @@ print(e_commerce_appended_df.dtypes)
 # > Country        object
 # > dtype: object
 
-e_commerce_appended_df['InvoiceDate'] = pd.to_datetime(
-    e_commerce_appended_df['InvoiceDate'])
+e_commerce_appended_df["InvoiceDate"] = pd.to_datetime(
+    e_commerce_appended_df["InvoiceDate"]
+)
 
 # after
 print(e_commerce_appended_df.dtypes)
@@ -161,7 +160,8 @@ print(e_commerce_appended_df.columns)
 # >       dtype='object')
 
 e_commerce_appended_df = e_commerce_appended_df.drop(
-    ["Country", "Quantity"], axis="columns")
+    ["Country", "Quantity"], axis="columns"
+)
 
 print(e_commerce_appended_df.columns)
 # > Index(['InvoiceNo', 'StockCode', 'Description', 'InvoiceDate', 'UnitPrice',
@@ -181,12 +181,13 @@ print(e_commerce_csv_df.head(5))
 
 cols_to_normalize = ["Quantity", "UnitPrice"]
 
+
 def absolute_maximum_scale(series):
     return series / series.abs().max()
 
+
 for column in cols_to_normalize:
     e_commerce_csv_df[column] = absolute_maximum_scale(e_commerce_csv_df[column])
-
 
 
 print(e_commerce_csv_df.head(5))
@@ -202,7 +203,7 @@ print(e_commerce_csv_df.head(5))
 # Working with lambdas
 ##########################################################
 
-e_commerce_csv_df['UnitPrice'] = e_commerce_csv_df['UnitPrice'].apply(lambda s: s*100)
+e_commerce_csv_df["UnitPrice"] = e_commerce_csv_df["UnitPrice"].apply(lambda s: s * 100)
 print(e_commerce_csv_df)
 
 
@@ -215,24 +216,26 @@ print(e_commerce_csv_df["Country"].unique())
 # > ['United Kingdom', 'France', 'Australia', 'Netherlands']
 # > Length: 4, dtype: string
 
-e_commerce_csv_df["unique_id"] = e_commerce_csv_df["InvoiceNo"] + \
-    e_commerce_csv_df["StockCode"] + \
-    e_commerce_csv_df["CustomerID"].astype("str")
+e_commerce_csv_df["unique_id"] = (
+    e_commerce_csv_df["InvoiceNo"]
+    + e_commerce_csv_df["StockCode"]
+    + e_commerce_csv_df["CustomerID"].astype("str")
+)
 
 print(e_commerce_csv_df.head(10))
 
-e_commerce_pivoted = (e_commerce_csv_df
-                      .filter(items=["unique_id", "UnitPrice", "Country"])
-                      .pivot_table(
-                          index="unique_id",
-                          columns="Country",  # Column(s) we want to pivot.
-                          # Column with values that we want to have in our new pivoted columns.
-                          values="UnitPrice",
-                          # Even if there is not aggregation we need to provide aggregation funciton.
-                          aggfunc="mean"
-                      )
-                      .reset_index()
-                      )
+e_commerce_pivoted = (
+    e_commerce_csv_df.filter(items=["unique_id", "UnitPrice", "Country"])
+    .pivot_table(
+        index="unique_id",
+        columns="Country",  # Column(s) we want to pivot.
+        # Column with values that we want to have in our new pivoted columns.
+        values="UnitPrice",
+        # Even if there is not aggregation we need to provide aggregation funciton.
+        aggfunc="mean",
+    )
+    .reset_index()
+)
 print(e_commerce_pivoted)
 # > Country          unique_id  Australia  France  Netherlands  United Kingdom
 # > 0         5363652173017850       <NA>    <NA>         <NA>        0.025758
@@ -250,14 +253,14 @@ print(e_commerce_pivoted)
 # > [945 rows x 5 columns]
 
 # store dataframe as parquet file
-e_commerce_pivoted.to_parquet('./data/e_commerce_pivoted.parquet.gzip',
-                              compression='gzip')
+e_commerce_pivoted.to_parquet(
+    "./data/e_commerce_pivoted.parquet.gzip", compression="gzip"
+)
 # > None
 
 # read parquet file
 
-read_parquet = pd.read_parquet(
-    './data/e_commerce_pivoted.parquet.gzip')
+read_parquet = pd.read_parquet("./data/e_commerce_pivoted.parquet.gzip")
 
 print(read_parquet.head(10))
 # > Country          unique_id  Australia  France  Netherlands  United Kingdom
@@ -281,7 +284,7 @@ print(read_parquet.head(10))
 
 
 print(e_commerce_json_df)
-melted_df = e_commerce_json_df.melt(id_vars=['InvoiceNo'])
+melted_df = e_commerce_json_df.melt(id_vars=["InvoiceNo"])
 print(melted_df)
 
 
@@ -290,15 +293,16 @@ print(melted_df)
 #############################################################
 
 json_obj = {
-    'InvoiceNo': '536370',
-    'Quantity': 36,
-    'InvoiceDate': '12/1/2010 8:45',
-    'CustomerID': 2,
-    'Country': 'France',
-    'item': {
-        'StockCode': 'John Kasich',
-        'Description': 'MINI PAINT SET VINTAGE',
-        'UnitPrice': 'UnitPrice'}
+    "InvoiceNo": "536370",
+    "Quantity": 36,
+    "InvoiceDate": "12/1/2010 8:45",
+    "CustomerID": 2,
+    "Country": "France",
+    "item": {
+        "StockCode": "John Kasich",
+        "Description": "MINI PAINT SET VINTAGE",
+        "UnitPrice": "UnitPrice",
+    },
 }
 json_df_raw = pd.DataFrame.from_dict(json_obj)
 print(json_df_raw.dtypes)

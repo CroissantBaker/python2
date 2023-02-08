@@ -1,4 +1,5 @@
 import pandas as pd
+
 # load a csv file
 e_commerce_data_path_csv = "./data/data.csv"
 e_commerce_data_fake_path_csv = "./data/fake_data.csv"
@@ -7,17 +8,17 @@ e_commerce_data_fake_path_csv = "./data/fake_data.csv"
 
 try:
     e_commerce_csv_df = pd.read_csv(
-        e_commerce_data_fake_path_csv,  encoding='unicode_escape', nrows=1000)
-except:
-    print(
-        "Please provide a corect path to the file!"
+        e_commerce_data_fake_path_csv, encoding="unicode_escape", nrows=1000
     )
+except:
+    print("Please provide a corect path to the file!")
 # > Please provide a corect path to the file!
 
 # show with value exception or something else
 try:
     e_commerce_csv_df = pd.read_csv(
-        e_commerce_data_fake_path_csv,  encoding='unicode_escape', nrows=1000)
+        e_commerce_data_fake_path_csv, encoding="unicode_escape", nrows=1000
+    )
 except FileNotFoundError as error:
     print(
         # f stings for better formating
@@ -27,6 +28,7 @@ except FileNotFoundError as error:
 
 
 # create a user defined exception
+
 
 class FileHasToManyRows(Exception):
     """Exception raised if file has too many rows.
@@ -45,17 +47,16 @@ class FileHasToManyRows(Exception):
 
 try:
     e_commerce_csv_df = pd.read_csv(
-        e_commerce_data_path_csv,  encoding='unicode_escape', nrows=1100)
+        e_commerce_data_path_csv, encoding="unicode_escape", nrows=1100
+    )
 
     number_of_rows = len(e_commerce_csv_df)
 
     if number_of_rows > 1000:
         raise FileHasToManyRows(number_of_rows)
-    
+
 except FileNotFoundError as error:
-    print(
-        f"{error}, please provide a corect path to the file!"
-    )
+    print(f"{error}, please provide a corect path to the file!")
 # > Traceback (most recent call last):
 # >   File "<string>", line 6, in <module>
 # > FileHasToManyRows: Csv file has too many rows, max rows is 1000 and the file has 1100

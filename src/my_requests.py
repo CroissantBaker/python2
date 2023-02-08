@@ -1,10 +1,11 @@
 # Beer recipes data via rest api from https://punkapi.com/documentation/v2
 # There is no authentication and it relies on rate limits from IP addresses 1 req/sec; 3600 requests per hour so be mindful :)
 import requests
+
 # Root Endpoint
 BASE_URL = "https://api.punkapi.com/v2/"
 # query data with GET - get all beers as json
-response = requests.get(f'{BASE_URL}/beers')
+response = requests.get(f"{BASE_URL}/beers")
 print(response.status_code)
 # > 200
 
@@ -81,11 +82,8 @@ print(all_beers[0])
 # Second parameter name is abv_lt       number  Returns all beers with ABV less than the supplied number
 # So return me beer between 15 and 20 ABV
 
-payload = {
-    'abv_gt': 15,
-    'abv_lt': 20
-}
-response = requests.get(f'{BASE_URL}/beers', params=payload)
+payload = {"abv_gt": 15, "abv_lt": 20}
+response = requests.get(f"{BASE_URL}/beers", params=payload)
 print(response)
 # > <Response [200]>
 beers_between_20_and_15_percent = response.json()
@@ -104,10 +102,7 @@ print(beers_between_20_and_15_percent[0].keys())
 
 # Lets get their names and alcohol percentages
 short_summary_of_beers = [
-    {
-        "beer_name": beer.get("name"),
-        "beer_alcohol": beer.get("abv")
-    }
+    {"beer_name": beer.get("name"), "beer_alcohol": beer.get("abv")}
     for beer in beers_between_20_and_15_percent
 ]
 
@@ -132,7 +127,7 @@ print(short_summary_of_beers)
 
 beer_id = 1
 
-response = requests.get(f'{BASE_URL}/beers/{beer_id}')
+response = requests.get(f"{BASE_URL}/beers/{beer_id}")
 print(response.status_code)
 # > 200
 beer_no_1 = response.json()
@@ -219,10 +214,7 @@ print(response.json())
 
 # write data with POST (json data in body)
 
-new_user = {
-    "name": "New User",
-    "job": "Data Engineer"
-}
+new_user = {"name": "New User", "job": "Data Engineer"}
 
 # Create a new user
 response = requests.post(f"{BASE_URL}/users", data=new_user)
@@ -234,4 +226,3 @@ print(response.json())
 # >   'id': '247',
 # >   'job': 'Data Engineer',
 # >   'name': 'New User'}
-

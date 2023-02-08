@@ -4,12 +4,14 @@
 #   - execute 'docker-compose up' in command line (folder of this project)
 #   - https://www.psycopg.org/docs/
 
-import psycopg2  
+import psycopg2
 import pandas as pd
 import pandas.io.sql as sqlio
 
 # Connect to your postgres DB
-conn = psycopg2.connect(dbname="python_course", user="postgres", password="example", host = "localhost")
+conn = psycopg2.connect(
+    dbname="python_course", user="postgres", password="example", host="localhost"
+)
 
 # Open a cursor to perform database operations
 cur = conn.cursor()
@@ -27,7 +29,7 @@ sql_create_table = """CREATE TABLE transactions (
         )"""
 
 # Execute a query to create the table
-#cur.execute("""DROP table transactions""")
+# cur.execute("""DROP table transactions""")
 cur.execute(sql_create_table)
 
 conn.commit()
@@ -42,9 +44,9 @@ query_invoice = """Select * from transactions where InvoiceNo = '536370'"""
 # get the results
 cur.execute(query_invoice)
 records = cur.fetchall()
-#print the results
+# print the results
 print(records)
-#print(records[0])
+# print(records[0])
 
 # get results into pandas dataframe
 data = sqlio.read_sql_query(query_invoice, conn)
