@@ -49,7 +49,7 @@ from pprint import pprint
 # Load JSON from file (deserialize text or binary file containing a JSON document to a Python object)
 
 
-with open("./data/data_subset.json") as json_file:
+with open("../data/data_subset.json") as json_file:
     data = json.load(json_file)
 pprint(data)
 # > [{'Country': 'France',
