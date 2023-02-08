@@ -156,7 +156,7 @@ for transaction in transactions_list_of_dicts:
 
 pprint([transaction.get("InvoiceNo") for transaction in transactions_list_of_dicts])
 # > [536370, 536372, 536389, 562106]
-##
+## ##
 # Modify the object's attributes
 # Update a value of the transaction with a InvoiceNo 536370
 
