@@ -1,9 +1,9 @@
 import json
+from pprint import pprint
 
 # jsonschema is an implementation of the JSON Schema specification for Python.
 import jsonschema
 from jsonschema import validate
-from pprint import pprint
 
 transaction_schema = {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -30,13 +30,14 @@ transaction_schema = {
     ],
 }
 
+
 # create a validation function
 
 
 def validate_json(json_data):
     try:
         json.loads(json_data)
-    except ValueError as err:
+    except ValueError:
         return False
     return True
 
@@ -55,12 +56,11 @@ def validate_json_schema(json_data, my_schema):
 
 
 if __name__ == "__main__":
-
     # create JSON schema with attributes and types
 
     # JSON validation
 
-    with open("./data/data_subset.json") as json_file:
+    with open("../data/data_subset.json") as json_file:
         data = json.load(json_file)
 
     # Below is an example of a json array of objects in ./data/data_subset.json     file
@@ -150,7 +150,7 @@ if __name__ == "__main__":
         "UnitPrice": 0.65,
         "CustomerID": 12583,
         "Country": "France",
-        "CustomerID": 12583,
+        # "CustomerID": 12583,
     }
     # validate(instance=InvoiceNo_is_a_string, schema=transaction_schema)
     # > Traceback (most recent call last):
@@ -175,7 +175,7 @@ if __name__ == "__main__":
     # Create invalid JSON string - missing ',' delimiter
     invalid_json_string = '{"InvoiceNo": 536370 "StockCode": 22492, "Description":  "MINI PAINT SET VINTAGE", "Quantity": 36, "InvoiceDate": "12/1/2010 8:45",   "UnitPrice": 0.65, "CustomerID": 12583, "Country": "France"}'
 
-    ## Activate this json.loads to see that the string cannot be loaded and throws exception
+    # Activate this json.loads to see that the string cannot be loaded and throws exception
     # json.loads(invalid_json_string)
     # > Traceback (most recent call last):
     # >   File "<string>", line 1, in <module>
@@ -189,15 +189,15 @@ if __name__ == "__main__":
 
     # validate valid json string
     res = validate_json(valid_json_string)
-    print(res)
+    print(1, res)
 
     # validate INVALID json string
     res = validate_json(invalid_json_string)
-    print(res)
+    print(2, res)
 
     # validate data with valid schema
     res = validate_json_schema(valid_transaction_dict, my_schema=transaction_schema)
-    print(res)
+    print(3, res)
     # > (True, 'Given JSON data is Valid')
 
     # validate data with invalid schema
