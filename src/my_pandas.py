@@ -1,5 +1,6 @@
 # pip install pandas
 import pandas as pd
+from pprint import pprint
 
 # load a csv file
 e_commerce_data_path_csv = "./data/data.csv"
@@ -204,7 +205,19 @@ print(e_commerce_csv_df.head(5))
 ##########################################################
 
 e_commerce_csv_df["UnitPrice"] = e_commerce_csv_df["UnitPrice"].apply(lambda s: s * 100)
-print(e_commerce_csv_df)
+pprint(e_commerce_csv_df)
+#     InvoiceNo StockCode                          Description  Quantity      InvoiceDate  UnitPrice  CustomerID         Country Language
+# 0      536365    85123A   WHITE HANGING HEART T-LIGHT HOLDER      0.01   12/1/2010 8:26   1.545455       17850  United Kingdom  English
+# 1      536365     71053                  WHITE METAL LANTERN      0.01   12/1/2010 8:26   2.054545       17850  United Kingdom  English
+# 2      536365    84406B       CREAM CUPID HEARTS COAT HANGER  0.013333   12/1/2010 8:26   1.666667       17850  United Kingdom  English
+# 3      536365    84029G  KNITTED UNION FLAG HOT WATER BOTTLE      0.01   12/1/2010 8:26   2.054545       17850  United Kingdom  English
+# 4      536365    84029E       RED WOOLLY HOTTIE WHITE HEART.      0.01   12/1/2010 8:26   2.054545       17850  United Kingdom  English
+# ..        ...       ...                                  ...       ...              ...        ...         ...             ...      ...
+# 995    536389     22191               IVORY DINER WALL CLOCK  0.003333  12/1/2010 10:03   5.151515       12431       Australia  English
+# 996    536389     22195         LARGE HEART MEASURING SPOONS      0.04  12/1/2010 10:03   1.000000       12431       Australia  English
+# 997    536389     22196         SMALL HEART MEASURING SPOONS      0.04  12/1/2010 10:03   0.515152       12431       Australia  English
+# 998    536403     22867              HAND WARMER BIRD DESIGN      0.16  12/1/2010 11:27   1.121212       12791     Netherlands    Dutch
+# 999    536403      POST                              POSTAGE  0.001667  12/1/2010 11:27   9.090909       12791     Netherlands    Dutch
 
 
 ##########################################################
@@ -215,14 +228,26 @@ print(e_commerce_csv_df["Country"].unique())
 # > <StringArray>
 # > ['United Kingdom', 'France', 'Australia', 'Netherlands']
 # > Length: 4, dtype: string
-
+print("##########################################################")
 e_commerce_csv_df["unique_id"] = (
     e_commerce_csv_df["InvoiceNo"]
     + e_commerce_csv_df["StockCode"]
     + e_commerce_csv_df["CustomerID"].astype("str")
 )
 
+
 print(e_commerce_csv_df.head(10))
+#   InvoiceNo StockCode                          Description  Quantity     InvoiceDate  UnitPrice  CustomerID         Country Language          unique_id
+# 0    536365    85123A   WHITE HANGING HEART T-LIGHT HOLDER      0.01  12/1/2010 8:26   1.545455       17850  United Kingdom  English  53636585123A17850
+# 1    536365     71053                  WHITE METAL LANTERN      0.01  12/1/2010 8:26   2.054545       17850  United Kingdom  English   5363657105317850
+# 2    536365    84406B       CREAM CUPID HEARTS COAT HANGER  0.013333  12/1/2010 8:26   1.666667       17850  United Kingdom  English  53636584406B17850
+# 3    536365    84029G  KNITTED UNION FLAG HOT WATER BOTTLE      0.01  12/1/2010 8:26   2.054545       17850  United Kingdom  English  53636584029G17850
+# 4    536365    84029E       RED WOOLLY HOTTIE WHITE HEART.      0.01  12/1/2010 8:26   2.054545       17850  United Kingdom  English  53636584029E17850
+# 5    536365     22752         SET 7 BABUSHKA NESTING BOXES  0.003333  12/1/2010 8:26   4.636364       17850  United Kingdom  English   5363652275217850
+# 6    536365     21730    GLASS STAR FROSTED T-LIGHT HOLDER      0.01  12/1/2010 8:26   2.575758       17850  United Kingdom  English   5363652173017850
+# 7    536366     22633               HAND WARMER UNION JACK      0.01  12/1/2010 8:28   1.121212       17850  United Kingdom  English   5363662263317850
+# 8    536366     22632            HAND WARMER RED POLKA DOT      0.01  12/1/2010 8:28   1.121212       17850  United Kingdom  English   5363662263217850
+# 9    536367     84879        ASSORTED COLOUR BIRD ORNAMENT  0.053333  12/1/2010 8:34   1.024242       13047  United Kingdom  English   5363678487913047
 
 e_commerce_pivoted = (
     e_commerce_csv_df.filter(items=["unique_id", "UnitPrice", "Country"])
@@ -282,11 +307,28 @@ print(read_parquet.head(10))
 # melting dataframes
 ##########################################################
 
-
-print(e_commerce_json_df)
+print("##########################################################")
+print(e_commerce_json_df.head(10))
+#    InvoiceNo  StockCode                   Description  Quantity      InvoiceDate  UnitPrice  CustomerID         Country
+# 0     536370      22492        MINI PAINT SET VINTAGE        36   12/1/2010 8:45       0.65       12583          France
+# 1     536372      22632     HAND WARMER RED POLKA DOT         6   12/1/2010 9:01       1.85       17850  United Kingdom
+# 2     536389      22727      ALARM CLOCK BAKELIKE RED         4  12/1/2010 10:03       3.75       12431       Australia
+# 3     562106      22993  SET OF 4 PANTRY JELLY MOULDS         1   8/2/2011 15:19       1.25       14076  United Kingdom
 melted_df = e_commerce_json_df.melt(id_vars=["InvoiceNo"])
-print(melted_df)
+print("##########################################################")
 
+print(melted_df)
+#    InvoiceNo     variable                         value
+# 0     536370    StockCode                         22492
+# 1     536372    StockCode                         22632
+# 2     536389    StockCode                         22727
+# 3     562106    StockCode                         22993
+# 4     536370  Description        MINI PAINT SET VINTAGE
+# 5     536372  Description     HAND WARMER RED POLKA DOT
+# 6     536389  Description      ALARM CLOCK BAKELIKE RED
+# 7     562106  Description  SET OF 4 PANTRY JELLY MOULDS
+# 8     536370     Quantity                            36
+# 9     536372     Quantity                             6
 
 #############################################################
 # Flattening (normalizing of ) dataframes from nested JSONs
@@ -306,6 +348,11 @@ json_obj = {
 }
 json_df_raw = pd.DataFrame.from_dict(json_obj)
 print(json_df_raw.dtypes)
+print(json_df_raw)
+#             InvoiceNo  Quantity     InvoiceDate  CustomerID Country                    item
+# Description    536370        36  12/1/2010 8:45           2  France  MINI PAINT SET VINTAGE
+# StockCode      536370        36  12/1/2010 8:45           2  France             John Kasich
+# UnitPrice      536370        36  12/1/2010 8:45           2  France               UnitPrice
 
 json_df_normalized = pd.json_normalize(json_obj)
 print(json_df_normalized.dtypes)
